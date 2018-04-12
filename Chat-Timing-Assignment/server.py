@@ -24,16 +24,15 @@ server.bind((IP, PORT))
 server.listen(10)
 
 
-while True:
-    
-    try:
-        
+
+while True:   
+    try:        
         # client connects
         client, addr = server.accept()
         msg = "Hello, I am writing to you to let you in on a really amazing"
-        msg += "secret. Trust me, you're gonna wanna know this..."
-        msg += "Okay okay. The secret is ...."
-        msg += "   .....                                .... "
+        msg += " secret. Trust me, you're gonna wanna know this..."
+        msg += "Okay okay. The secret is ........   "
+        msg += "............................................................... "
         msg += "Yeah sorry there is no secret. Really sorry about that. "
         msg += "I hope you can forgive me. Honestly though, if not oh well."
         msg += "No skin off my back! Well, anyway...I guess I'll talk to you later"

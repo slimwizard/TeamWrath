@@ -22,31 +22,43 @@ ONE = 0.1
 
 
 
-#create socket
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#connect to server
-server.connect((IP, PORT))
+try:
+    #create socket
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #connect to server
+    server.connect((IP, PORT))
+except:
+    sys.stdout.write("An error occured whilst connecting. Please be sure that the code contains a valid IP address for the server\n")
+    exit()
 
+overt_msg = ""
 covert_bin = " "
 
 #evaluates time between characters received and maps to 0 or 1
 while True:
     t0 = time()
     data = server.recv(4096)
+    if not data: break
     t1 = time()
     delta = round(t1 - t0, 3)
     if (delta >= ONE):
         covert_bin += "1"
     else:
         covert_bin += "0"
-    if not data: break
+    overt_msg += data
+    if overt_msg[-3:] == ("EOF" or "eof"): break
+
+    #sys.stdout.write(data)  
+    
     # prints the character and the time interval in which it was received
     # Allowing us to debug and adjust our binary mappings during the challenge as 
     # the server may be sending data in different time intervals than .1 and .025
     print("{}  {}".format(data, delta))
 
-covert_bin = covert_bin[2:]
 
+
+covert_bin = covert_bin[2:]
+print(overt_msg)
 
 covert = ""
 i = 0
@@ -62,4 +74,8 @@ while (i < len(covert_bin)):
         covert += "?"
     i += 8
 
-print("Covert message: {}".format(covert.split("EOF")[0]))
+
+try:
+    sys.stdout.write("Covert message: {}\n".format(covert.split("EOF")[0]))
+except:
+    sys.stdout.write("Covert message: {}\n".format(covert))
